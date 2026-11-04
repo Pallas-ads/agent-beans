@@ -328,7 +328,7 @@ button.btn { font-family: var(--ui); }
     <dl class="stack">
       <div><dt>Muse Spark Open</dt><dd>Every daily role: Growth Lead, Analyst, Media Buyer, Producer and Reviewer. Open weights keep the daily checks under four cents a day.</dd></div>
       <div><dt>Muse Spark 1.3 with web search</dt><dd>The Strategist's market research. Every claim links to the page the search actually found.</dd></div>
-      <div><dt>SAM 3.1 and Muse Image 1.0</dt><dd>Your product is cut from your own photo. Muse Image only paints the scene around it.</dd></div>
+      <div><dt>Muse Image 1.0 and SAM 3.1</dt><dd>Muse Image shoots each scene with your product in it, using your own photo as the reference. SAM 3.1 finds the product in every shot, so the words never cover it.</dd></div>
       <div><dt>Ads MCP, Marketing API and Facebook Login for Business</dt><dd>Connect your account with only the permissions you grant, read it through the Ads MCP, and write only what you approved. New ads always start paused.</dd></div>
     </dl>
   </section>
@@ -399,7 +399,7 @@ const CREW = {
   GL: { name: "Growth Lead", tag: "Plans the week", voice: "Two tests this week, not five. Here is why.", does: "Turns your goal and last week's results into a brief and a test plan, then hands out the work.", model: "Muse Spark Open" },
   AN: { name: "Analyst", tag: "Reads the numbers", voice: "I don't quote a number I can't cite.", does: "Reads the account every day and writes findings and test readouts, each number tied to evidence.", model: "Muse Spark Open" },
   CS: { name: "Creative Strategist", tag: "Researches the market", voice: "Every claim comes with the page I found it on.", does: "Searches the web for competitors and category trends, and turns them into angles worth testing.", model: "Muse Spark 1.3 with hosted web search" },
-  CP: { name: "Creative Producer", tag: "Makes the ads", voice: "Your real product, cut from your own photo.", does: "Writes the copy and builds the image for each test, and asks the Analyst when it needs a number.", model: "Muse Spark Open, Muse Image 1.0 and SAM 3.1" },
+  CP: { name: "Creative Producer", tag: "Makes the ads", voice: "Every scene starts from your own product photo.", does: "Writes the copy and plans three scenes for each test, and asks the Analyst when it needs a number.", model: "Muse Spark Open, Muse Image 1.0 and SAM 3.1" },
   MB: { name: "Media Buyer", tag: "Moves the budget", voice: "Not while it is still learning.", does: "Proposes budget changes and pauses from the daily numbers, within six house rules checked in code.", model: "Muse Spark Open" },
   RV: { name: "Reviewer", tag: "Checks the work", voice: "Checked in code first, then by eye.", does: "Sends back unsupported claims, wrong numbers and images that don't fit, with one line per fix.", model: "Code checks, then Muse Spark Open looking at the image" },
   OP: { name: "Operator", tag: "Acts on your approval", voice: "I run exactly what you approved, or nothing.", does: "The only crew member that writes to your ad account. New ads start paused.", model: "Plain code, no model" },
