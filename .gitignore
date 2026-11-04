@@ -1,34 +1,10 @@
-# Secrets
-.env
-.env.*
-!.env.example
-
-# Python
-__pycache__/
-*.py[cod]
-.venv/
-.pytest_cache/
-.ruff_cache/
-*.egg-info/
-dist/
-build/
-
-# Runs and local data
-runs/*
-!runs/.gitkeep
-*.sqlite
-*.sqlite-*
-*.db
-spike/out/
-
-# Web
+# Web app
 node_modules/
 web/dist/
 web/dist-replay/
 
+# Built site
+_site/
+
 # OS
 .DS_Store
-
-# Bench output
-bench/out/
-_site/

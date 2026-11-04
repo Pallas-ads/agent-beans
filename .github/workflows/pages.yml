@@ -1,5 +1,5 @@
-# Publishes the public site: the homepage (site/) and, under demo/, a read-only replay of the
-# app for each recorded live run in replay/, made with `pgt replay`. See site/build.sh.
+# Publishes the Agent Beans site: the homepage (site/) and, under demo/, a read-only replay of
+# the app (web/) for each recorded live run in replay/. See site/build.sh.
 name: Pages
 
 on:

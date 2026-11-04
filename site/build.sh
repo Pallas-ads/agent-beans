@@ -9,7 +9,7 @@ cd "$(dirname "$0")/.."
 
 rm -rf _site
 mkdir -p _site
-cp site/index.html web/public/pallas-logo.png _site/
+cp site/index.html _site/
 cp -R web/public/avatars _site/
 
 for run in replay/*/; do

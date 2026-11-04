@@ -1,4 +1,4 @@
-// Types and calls for the PGT web API (src/pgt/api). The server computes every status;
+// Types and calls for the Agent Beans web API (src/pgt/api). The server computes every status;
 // the client only shows what it is given.
 import { useEffect, useState } from "react";
 
@@ -38,9 +38,14 @@ export type RoomItem = Msg | Fold | DayDiv;
 
 export type Check = { passed: boolean; text: string; rule: string; evidence?: string[] };
 export type Evidence = { id: string; note: string; values: Record<string, number> };
-export type Image = { ratio: string; width: number; height: number; url: string | null };
-export type AdCopy = { name: string; headline: string; primary_text: string; description: string };
-export type Creative = { key: string; title: string; test_id: string; ad_copy: AdCopy; images: Image[] };
+export type Image = { ratio: string; width: number; height: number; url: string | null; variant?: number };
+export type Video = { width: number; height: number; seconds: number; url: string | null };
+export type Scene = { angle: string; prompt: string };
+export type Storyboard = { hook: string; benefit: string; proof: string; cta: string };
+export type AdCopy = { name: string; headline: string; primary_text: string; description: string;
+                       scenes?: Scene[]; video?: Storyboard };
+export type Creative = { key: string; title: string; test_id: string; ad_copy: AdCopy; images: Image[];
+                         video?: Video | null };
 
 export type Detail = Deliverable & {
   headline: string;
@@ -104,12 +109,93 @@ export type Asset = {
   test_id: string | null; week: string | null; status: string; status_label: string;
   version: number; updated: string | null; models: string[]; after: string; bad: boolean;
   image: string | null; images: (Image & { path: string })[]; source: string | null;
+  video?: string | null; scenes?: string[];
   steps: Step[]; facts: [string, string][]; used_in: Link | null; deliverable: string | null;
 };
 
+/** Memory: the account memory, each role's lessons, frozen week records and owner notes. */
+export type MemLine = { id: string; text: string; sources: string[]; author: string; locked: boolean;
+                        status: "active" | "watch" | "inactive" | "struck"; created_week: number | null;
+                        last_confirmed_week: number | null; flag: string | null };
+export type MemVersion = { version: number; week: number | null; reason: string; author: string; ts: string; lines: number };
+export type MemStore = { version: number; lines: MemLine[]; history: MemVersion[] };
+export type Note = { id: string; event_id: number; text: string; kind: "message" | "send_back"; to: string | null;
+                     day: number | null; routed: { to: string; by: string; event_id: number }[]; seen_by: string[];
+                     done: { role: string; how: string } | null };
+export type MemProposal = { id: number; ts: string; store: string; role: string | null; line_id: string;
+                            text: string; was: string; by: string; sources: string[];
+                            // A line that would loosen a check, gate or habit, and why it was flagged.
+                            kind?: "loosening"; week?: number; status?: string; proposed_as?: string;
+                            flags?: { by: string; why: string }[] };
+export type FactProposal = { id: number; ts: string; sim_day: number | null; key: string; value: unknown;
+                             was: unknown; reason: string; evidence_ids?: string[]; by?: string; role?: string;
+                             resolved: { accepted: boolean } | null };
+export type Rejected = { id: number; ts: string; store: string; role: string | null; line_id: string; text: string;
+                         sources: string[]; problems: string[]; by: string; week: number };
+export type MemoryData = {
+  account: MemStore; lessons: Record<string, MemStore>;
+  weeks: { week: number; stub: string; event_id: number }[]; closed: number[];
+  notes: Note[]; proposals: MemProposal[]; fact_proposals: FactProposal[];
+  decided?: (MemProposal & { accepted: boolean })[];
+  charter: Record<string, unknown> | null; charter_version: number;
+  rejected: Rejected[];
+  narrowed?: { id: number; ts: string; store: string; role: string | null; line_id: string; from: string;
+               to: string; sources: string[]; reason: string; week: number }[];
+  reverted: { id: number; ts: string; role: string; from_version: number;
+    to_version: number; reason: string }[];
+  collapse: { id: number; role: string; reason: string }[];
+  failed: { id: number; pass: string; week: number; error: string }[];
+  empty?: { id: number; pass: string; store: string; role: string | null; week: number; summary: string }[];
+  sent_back?: { id: number; role: string; topic: string; reason: string }[];
+};
+export type Outcome = { id: string; outcome: string; good: boolean | null; detail: string; simulated?: boolean };
+export type JournalEntry = { id: string; event_id: number; loop_id: string; role: string; topic: string;
+                             kind: string; decided: string; note_to_self: string; week: number | null;
+                             day: number | null; outcomes: Outcome[] };
+export type WeekRecord = { week: number; days: number[]; stub: string;
+  readouts: { day: number; test_id: string; name: string; angle: string; recommendation: string;
+              rationale: string; metric: string; exploratory?: boolean }[];
+  changes: { change_set_id: string; day: number | null; created_ad_ids: string[];
+             applied: { kind: string; target_id: string; new_daily_budget: number | null }[] }[];
+  owner: { approved: number; sent_back: number; simulated: number; notes: string[] } };
+export type MemoryEdit = { store: "account" | "lessons"; role?: string | null;
+                           action: "add" | "edit" | "strike" | "restore"; line_id?: string | null; text?: string };
+
+/** Harness: what each role's calls cost and saw, against its context budget. */
+export type RoleRow = { role: string; calls: number; input_tokens: number; cached_tokens: number; cached_share: number;
+  output_tokens: number; searches: number; cost: number; failures: Record<string, number>; failed: number;
+  contexts: number; trimmed: number; trimmed_share: number; trimmed_sections: Record<string, number>;
+  flag_larger_budget: boolean; largest_inputs: number; inputs_budget: number; largest_context: number;
+  budget_total: number };
+export type CallRow = { event_id: number; ts: string; loop_id: string | null; sim_day: number | null; role: string;
+  model: string; topic: string | null; attempt: number | null; failure: string | null; input_tokens: number;
+  cached_tokens: number; output_tokens: number; cost: number; wall_time_s: number; context_hash: string | null;
+  inspectable: boolean };
+export type HarnessData = { roles: RoleRow[]; totals: { calls: number; input_tokens: number; cached_tokens: number;
+  cached_share: number; output_tokens: number; cost: number; failed: number; trimmed: number };
+  budgets: Record<string, number | string>[]; stored: { contexts: number; requests: number };
+  trim_flag_share: number; recent: CallRow[] };
+export type SectionInfo = { name: string; place: string; must_keep: boolean; tokens: number; budget: number | null;
+                            dropped: number; left_out: string[]; before_tokens: number | null };
+export type Turn = { kind: string; parts: Record<string, unknown>[] };
+export type SeenCall = { event_id: number; ts: string; loop_id: string | null; sim_day: number | null;
+  call: Record<string, unknown> & { input_tokens: number; cached_tokens?: number; output_tokens: number; cost: number;
+    failure?: string | null; attempt?: number; deadline_s?: number };
+  role: string; topic: string | null; model: string; provider: string | null; settings: Record<string, unknown>;
+  instructions: string; prompt: string; sections: SectionInfo[];
+  attachments: { media_type: string; bytes: number; sha256: string }[];
+  tools: { name: string; description: string }[]; native_tools: unknown[];
+  output: { mode: string; object?: { name: string } | null } | null; turns: Turn[];
+  request_hash: string | null; context_hash: string | null };
+
 export type Mode = "offline" | "live" | "mixed";
 export type AppStatus = { busy: string | null; error: string | null; where: string;
-                          day: number | null; last_event_id: number; owner: string; mode: Mode };
+                          day: number | null; day_one?: string | null; last_event_id: number;
+                          mode: Mode } & OwnerProfile;
+
+/** The owner's name and picture. `owner_set` is false until they give a name; the picture is
+ *  null when they have none, and the app draws their initials. */
+export type OwnerProfile = { owner: string; owner_set: boolean; owner_avatar: string | null };
 
 /** Model calls for one role or one deliverable, at list price. */
 export type Tally = {
@@ -157,10 +243,11 @@ export function costLabel(cost: number | null | undefined): string {
 /** The GitHub Pages build (vite build --mode replay) reads a recorded run from data/ and changes nothing.
  *  `pgt replay` writes those files, named the same way as here. */
 export const REPLAY = import.meta.env.MODE === "replay";
-export const READ_ONLY = "This is a recorded replay, so nothing changes here. Run PGT locally to approve, send back or talk to the team.";
+export const READ_ONLY = "This is a recorded replay, so nothing changes here. Run Agent Beans locally to approve, send back or talk to the team.";
 
 function replayFile(path: string): string {
-  return "data/" + path.replace(/^\/api\//, "").replace("?days=", "-") + ".json";
+  // "/api/dashboard?days=7" -> "data/dashboard-7.json"; src/pgt/replay.py names files the same way.
+  return "data/" + path.replace(/^\/api\//, "").replace(/\?\w+=/, "-") + ".json";
 }
 
 async function call<T>(path: string, init?: RequestInit): Promise<T> {
@@ -207,18 +294,38 @@ export const api = {
   dashboard: (days: number) => call<DashboardData>(`/api/dashboard?days=${days}`),
   drafts: () => call<Drafts>("/api/drafts"),
   assets: () => call<{ items: Asset[] } & Which>("/api/assets"),
-  upload: async (file: File) => {
-    if (REPLAY) throw new Error(READ_ONLY);
-    const res = await fetch(`/api/assets/upload?name=${encodeURIComponent(file.name)}`,
-                            { method: "POST", body: file });
-    if (!res.ok) {
-      let detail = res.statusText;
-      try { detail = (await res.json()).detail ?? detail; } catch { /* plain text error */ }
-      throw new Error(detail);
-    }
-    return res.json() as Promise<{ ok: boolean; id: string }>;
-  },
+  memory: () => call<MemoryData>("/api/memory"),
+  journal: (role: string) => call<{ role: string; entries: JournalEntry[] }>(`/api/memory/journal/${role}`),
+  week: (week: number) => call<WeekRecord>(`/api/memory/week/${week}`),
+  editMemory: (body: MemoryEdit) =>
+    call<{ ok: boolean }>("/api/memory/edit", { method: "POST", body: JSON.stringify(body) }),
+  decideMemory: (id: number, accept: boolean) =>
+    call(`/api/memory/proposals/${id}`, { method: "POST", body: JSON.stringify({ accept }) }),
+  decideFact: (id: number, accept: boolean) =>
+    call<{ ok: boolean; fact_version: number; refresh: boolean }>(`/api/facts/proposals/${id}`,
+      { method: "POST", body: JSON.stringify({ accept }) }),
+  harness: () => call<HarnessData>("/api/harness"),
+  calls: (topic: string) => call<{ items: CallRow[] }>(`/api/calls?topic=${topic}`),
+  seen: (id: number) => call<SeenCall>(`/api/calls/${id}`),
+  upload: (file: File) =>
+    send<{ ok: boolean; id: string }>(`/api/assets/upload?name=${encodeURIComponent(file.name)}`, file),
+  setOwner: (name: string) =>
+    call<OwnerProfile>("/api/owner", { method: "POST", body: JSON.stringify({ name }) }),
+  ownerPhoto: (file: File) => send<OwnerProfile>("/api/owner/avatar", file),
+  clearOwnerPhoto: () => call<OwnerProfile>("/api/owner/avatar", { method: "DELETE" }),
 };
+
+/** Posts a file as the raw request body. */
+async function send<T>(path: string, file: File): Promise<T> {
+  if (REPLAY) throw new Error(READ_ONLY);
+  const res = await fetch(path, { method: "POST", body: file });
+  if (!res.ok) {
+    let detail = res.statusText;
+    try { detail = (await res.json()).detail ?? detail; } catch { /* plain text error */ }
+    throw new Error(detail);
+  }
+  return res.json() as Promise<T>;
+}
 
 /** A counter that goes up whenever the event log or the team's busy state changes. */
 export function useLive(): { tick: number; busy: string | null } {
@@ -257,9 +364,38 @@ export function clock(ts: string | null | undefined): string {
   return d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
 }
 
+/** A date as Mon D YYYY, e.g. "Oct 31 2026"; today when there is no timestamp. */
+export function date(ts?: string | null): string {
+  const d = ts ? new Date(ts) : new Date();
+  if (Number.isNaN(d.getTime())) return "";
+  return `${d.toLocaleString("en-US", { month: "short" })} ${d.getDate()} ${d.getFullYear()}`;
+}
+
+let dayOne: Date | null = null;
+
+/** Sets the calendar date of Day 1 (from the status), so day numbers read as dates. */
+export function setDayOne(iso: string | null | undefined) {
+  dayOne = iso ? new Date(`${iso}T12:00:00`) : null;
+}
+
+/** Day 3 as its date, "Nov 3" (or "Tue Nov 3"); "Day 3" before an account is connected. */
+export function onDay(day: number, weekday = false): string {
+  if (!dayOne) return `Day ${day}`;
+  const d = new Date(dayOne);
+  d.setDate(d.getDate() + day - 1);
+  const md = `${d.toLocaleString("en-US", { month: "short" })} ${d.getDate()}`;
+  return weekday ? `${d.toLocaleString("en-US", { weekday: "short" })} ${md}` : md;
+}
+
+/** Days 3 to 6 as "Nov 3 to Nov 6"; one day as "Nov 3". */
+export function onDays(first: number, last: number): string {
+  if (first === last) return onDay(first);
+  return dayOne ? `${onDay(first)} to ${onDay(last)}` : `Days ${first} to ${last}`;
+}
+
 export function when(ts: string | null | undefined, day: number | null | undefined): string {
   const t = clock(ts);
-  return day ? `Day ${day} · ${t}` : t;
+  return day ? `${onDay(day)} · ${t}` : t;
 }
 
 export function money(n: number | null | undefined): string {

@@ -1,7 +1,7 @@
 // 4b Deliverables: every output in one list, one status each. What waits on the owner is
 // pinned on top; headers sort and the chips filter, both inside each group.
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { when, type Deliverable, type Status } from "./api";
+import { onDay, when, type Deliverable, type Status } from "./api";
 import { go, type Route } from "./route";
 import { Av, Chevron, Lbl } from "./ui";
 
@@ -54,11 +54,11 @@ function Row({ d }: { d: Deliverable }) {
     <div className={d.status === "wait" ? "dl-r need" : "dl-r"} onClick={() => go("deliverables/" + d.key)}
          role="link" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter") go("deliverables/" + d.key); }}>
       <div><div className="t1">{d.title}</div><div className="t2">{d.sub}</div></div>
-      <div className="who"><Av who={d.from} size="sm" />{d.from.name}</div>
+      <div className="who"><Av who={d.from} size="sm" /><span title={d.from.name}>{d.from.name}</span></div>
       <div><Lbl status={d.status} label={d.status_label} /></div>
       <div className="when">{when(d.updated, d.sim_day)}</div>
       <div><a href={`#/room?focus=${d.discussed.event_id}`} onClick={(e) => e.stopPropagation()}>
-        Team Room · {d.discussed.sim_day ? `Day ${d.discussed.sim_day}` : "now"}</a></div>
+        Team Room · {d.discussed.sim_day ? onDay(d.discussed.sim_day) : "now"}</a></div>
     </div>
   );
 }
