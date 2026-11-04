@@ -58,19 +58,19 @@ body { margin: 0; background: var(--paper); -webkit-font-smoothing: antialiased;
 .node { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; outline: none; }
 .node img { width: 72px; height: 72px; border-radius: 17px; display: block; transition: transform .2s cubic-bezier(.2,.7,.3,1), box-shadow .2s; }
 .node:hover img { transform: translateY(-4px); }
-.node.on img { transform: translateY(-4px); box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--blue), 0 12px 20px -10px rgba(7,91,255,.5); }
+.node.on img { box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--blue), 0 12px 20px -10px rgba(7,91,255,.5); }
 .node:focus-visible img { box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--blue); }
 .nn { font: 600 13px/1.2 var(--ui); color: var(--ink); margin-top: 6px; white-space: nowrap; }
 .nt { font: 12px/1.3 var(--ui); color: var(--faint); margin-top: 3px; max-width: 96px; text-wrap: balance; }
 .node.on .nn { color: var(--blue-ink); }
-.w { height: 1.5px; background: var(--rule-strong); margin-top: 51px; position: relative; min-width: 16px; }
-.w.go { background: var(--blue); }
-.w.go::before { content: ""; position: absolute; top: -2.25px; left: 0; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 3px rgba(7,91,255,.16); animation: run 2.6s cubic-bezier(.45,0,.55,1) infinite; }
+/* every line in the flow carries a moving dot; line and dot together at 75% opacity */
+.w { height: 1.5px; background: var(--blue); opacity: .75; margin-top: 51px; position: relative; min-width: 16px; }
+.w::before { content: ""; position: absolute; top: -2.25px; left: 0; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 3px rgba(7,91,255,.16); animation: run 2.6s cubic-bezier(.45,0,.55,1) infinite; }
 @keyframes run { 0% { left: 0; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { left: calc(100% - 8px); opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .w.go::before { animation: none; display: none; } }
+@media (prefers-reduced-motion: reduce) { .w::before { animation: none; display: none; } }
 .owner { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .owner svg { width: 160px; height: 126px; display: block; margin-top: -14px; }
-.squad { display: grid; grid-template-columns: repeat(4, 84px); gap: 6px; padding: 0 12px 12px; border: 1px solid var(--rule); border-radius: 6px; position: relative; background: var(--surface); }
+.squad { display: grid; grid-template-columns: repeat(4, 84px); gap: 6px; margin-top: -1px; padding: 0 12px 12px; border: 1px solid var(--rule); border-radius: 6px; position: relative; background: var(--surface); }
 .squad-l { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--paper); padding: 0 8px; font: 500 12px/20px var(--ui); color: var(--faint); white-space: nowrap; }
 .gate { display: flex; flex-direction: column; align-items: stretch; }
 .gate-l { height: 51px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; box-sizing: border-box; gap: 5px; font: 600 12px var(--ui); color: var(--signal-ink); white-space: nowrap; }
@@ -94,7 +94,9 @@ body { margin: 0; background: var(--paper); -webkit-font-smoothing: antialiased;
 
 /* demo */
 .sec { padding: 120px 0 0; }
-.sec-head { display: grid; grid-template-columns: minmax(0,1fr) 400px; gap: 48px; align-items: end; margin-bottom: 32px; }
+/* header and caption line up with the app frame, which leaves 46px on the right for the scenario tabs */
+.sec-head { margin: 0 46px 32px 0; }
+.sec-head .sub { margin-top: 16px; }
 .stage { display: grid; grid-template-columns: minmax(0,1fr) 46px; align-items: start; }
 .frame { border: 1px solid var(--rule-strong); border-radius: 8px 0 8px 8px; overflow: hidden; background: var(--surface); box-shadow: 0 28px 60px -30px rgba(25,31,43,.32); position: relative; z-index: 1; }
 .frame-bar { height: 36px; display: flex; align-items: center; gap: 8px; padding: 0 14px; border-bottom: 1px solid var(--rule); background: var(--sunken); }
@@ -106,15 +108,15 @@ body { margin: 0; background: var(--paper); -webkit-font-smoothing: antialiased;
 .mk:hover { color: var(--ink); }
 .mk.on { background: var(--surface); color: var(--ink); border-color: var(--rule-strong); margin-left: -1px; position: relative; z-index: 2; }
 .mk.on::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); margin-bottom: 10px; }
-.cap { display: flex; justify-content: space-between; align-items: baseline; gap: 32px; padding: 16px 46px 0 0; font-size: 14.5px; color: var(--muted); }
+.cap { margin: 16px 46px 0 0; font-size: 14.5px; color: var(--muted); text-wrap: pretty; }
 .cap b { color: var(--ink); font-weight: 600; }
-.cap .num { font: 500 13px var(--mono); color: var(--faint); white-space: nowrap; }
 
 /* built on meta */
 .meta { display: grid; grid-template-columns: 380px minmax(0,1fr); gap: 64px; align-items: start; }
 .meta .sub { margin-top: 18px; }
 .stack { margin: 0; border-top: 1px solid var(--ink); }
-.stack div { display: grid; grid-template-columns: 250px minmax(0,1fr); gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+.meta .h2 em { font-style: normal; color: var(--blue); }
+.stack div { display: grid; grid-template-columns: 250px minmax(0,1fr); gap: 24px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--rule); }
 .stack dt { font: 600 15.5px/1.4 var(--ui); color: var(--ink); }
 .stack dd { margin: 0; font: 15px/1.55 var(--ui); color: var(--text); text-wrap: pretty; }
 
@@ -164,13 +166,13 @@ button.btn { font-family: var(--ui); }
 @media (max-width: 1140px) {
   .flow { display: flex; flex-direction: column; align-items: center; }
   .flow .w, .gate .w { width: 1.5px; height: 28px; min-width: 0; margin: 6px 0; }
-  .w.go::before { display: none; }
+  .w::before { display: none; }
   .gate { flex-direction: row; align-items: center; gap: 10px; }
   .gate-l { height: auto; padding: 0; order: 2; }
   .squad { margin-top: 10px; padding-top: 6px; }
   .persona { grid-template-columns: 76px minmax(0,1fr); gap: 18px 24px; }
   .persona .p-f { grid-column: 1 / -1; border-left: 0; padding-left: 0; min-height: 0; }
-  .sec-head, .meta { grid-template-columns: minmax(0,1fr); gap: 18px; }
+  .meta { grid-template-columns: minmax(0,1fr); gap: 18px; }
 }
 @media (max-width: 720px) {
   .wrap { padding: 0 16px; }
@@ -188,7 +190,7 @@ button.btn { font-family: var(--ui); }
   .mk.on { margin-left: 0; }
   .mk.on::before { margin: 0 8px 0 0; }
   .frame iframe { height: 560px; }
-  .cap { flex-direction: column; gap: 6px; padding-right: 0; }
+  .sec-head, .cap { margin-right: 0; }
   .stack div { grid-template-columns: minmax(0,1fr); gap: 6px; }
   .sec { padding-top: 80px; }
   .close { margin-top: 96px; padding: 56px 20px 44px; }
@@ -203,7 +205,7 @@ button.btn { font-family: var(--ui); }
 <div class="s">
 <div class="wrap">
   <nav class="nav">
-    <a class="brand" href="./"><img src="avatars/GL.svg" alt="" />Agent Beans</a>
+    <a class="brand" href="https://youtu.be/QVajKCMgSk0" target="_blank" rel="noopener"><img src="avatars/GL.svg" alt="" />Agent Beans</a>
     <div class="links"><a href="#crew">The crew</a><a href="#demo">Live demo</a><a href="#meta">Built on Meta</a></div>
     <a class="btn sm bare" id="repo-link" style="visibility: hidden"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z" /></svg>GitHub</a>
   </nav>
@@ -260,7 +262,7 @@ button.btn { font-family: var(--ui); }
           <path d="M41.2 34.2l2.4-3.8M44.4 37.4l3.6-2.6" stroke-width="1.2"/>
           <path d="M4 125.6h160" stroke-width="1.2"/>
         </svg>
-        <div class="nt" style="margin-top: 4px">set the goal</div>
+        <div class="nt" style="margin-top: 4px">Set the goal</div>
       </div>
       <div class="w"></div>
       <div class="node" tabindex="0" data-code="GL"><div class="slot"><img src="avatars/GL.svg" alt="" /></div><div class="nn" style="margin-top: -10px">Growth Lead</div><div class="nt">Plans the week</div></div>
@@ -275,15 +277,15 @@ button.btn { font-family: var(--ui); }
       <div class="node" tabindex="0" data-code="RV"><div class="slot"><img src="avatars/RV.svg" alt="" /></div><div class="nn" style="margin-top: -10px">Reviewer</div><div class="nt">Checks the work</div></div>
       <div class="gate">
         <div class="gate-l"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="7" r="6" /><path d="M4.3 7.2l1.8 1.8 3.6-3.8" /></svg>you approve</div>
-        <div class="w go"></div>
+        <div class="w"></div>
       </div>
-      <div class="node" tabindex="0" data-code="OP"><div class="slot"><img src="avatars/OP.svg" alt="" /></div><div class="nn" style="margin-top: -10px">Operator</div><div class="nt">Acts on your yes</div></div>
-      <div class="w go"></div>
+      <div class="node" tabindex="0" data-code="OP"><div class="slot"><img src="avatars/OP.svg" alt="" /></div><div class="nn" style="margin-top: -10px">Operator</div><div class="nt">Acts on your approval</div></div>
+      <div class="w"></div>
       <div class="node" style="cursor: default">
         <div class="slot"><div class="acct">
           <svg viewBox="0 0 48 30" fill="none" role="img" aria-label="Meta"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0064e0" /><stop offset="1" stop-color="#0082fb" /></linearGradient></defs><path d="M6.5 19.5C6.5 11 10.5 5 15.5 5c5 0 8 5.5 11.5 11.5S33 26 36.5 26c3 0 4.5-2.6 4.5-6.5C41 11 37.5 5 32.5 5c-4.6 0-7.6 5.3-10.9 11.2C18.3 22 15.2 26 11.8 26 8.6 26 6.5 23.5 6.5 19.5z" stroke="url(#mg)" stroke-width="4.2" stroke-linejoin="round" /></svg>
         </div></div>
-        <div class="nn" style="margin-top: -10px">Meta Ads</div><div class="nt">new ads start paused</div>
+        <div class="nn" style="margin-top: -10px">Meta Ads</div>
       </div>
     </div>
 
@@ -315,12 +317,12 @@ button.btn { font-family: var(--ui); }
         <div class="mk" role="tab" tabindex="0" data-scen="beans-active" aria-selected="false">Indie developer</div>
       </div>
     </div>
-    <div class="cap"><span><b id="d-name"></b>, <span id="d-desc"></span></span><span class="num" id="d-num"></span></div>
+    <p class="cap"><b id="d-name"></b>, <span id="d-desc"></span></p>
   </section>
 
   <section class="sec meta" id="meta">
     <div>
-      <h2 class="h2">Built on Meta, end to end.</h2>
+      <h2 class="h2">Built on <em>Meta</em>, end to end.</h2>
       <p class="sub">The crew thinks on Muse models, makes ads with your real product, and talks to your account only through Meta's own ads interfaces.</p>
     </div>
     <dl class="stack">
@@ -400,12 +402,12 @@ const CREW = {
   CP: { name: "Creative Producer", tag: "Makes the ads", voice: "Your real product, cut from your own photo.", does: "Writes the copy and builds the image for each test, and asks the Analyst when it needs a number.", model: "Muse Spark Open, Muse Image 1.0 and SAM 3.1" },
   MB: { name: "Media Buyer", tag: "Moves the budget", voice: "Not while it is still learning.", does: "Proposes budget changes and pauses from the daily numbers, within six house rules checked in code.", model: "Muse Spark Open" },
   RV: { name: "Reviewer", tag: "Checks the work", voice: "Checked in code first, then by eye.", does: "Sends back unsupported claims, wrong numbers and images that don't fit, with one line per fix.", model: "Code checks, then Muse Spark Open looking at the image" },
-  OP: { name: "Operator", tag: "Acts on your yes", voice: "I run exactly what you approved, or nothing.", does: "The only crew member that writes to your ad account. New ads start paused.", model: "Plain code, no model" },
+  OP: { name: "Operator", tag: "Acts on your approval", voice: "I run exactly what you approved, or nothing.", does: "The only crew member that writes to your ad account. New ads start paused.", model: "Plain code, no model" },
 };
 
 const SCENARIOS = {
-  "northpaw": { name: "Northpaw Supply", desc: "a pet-supplies store already running ads. 18 daily checks, two weekly reviews, six new ads made and approved. Purchases cost $13.16 against a $16 goal.", num: "204 model calls · $2.02" },
-  "beans-active": { name: "Beans' Active", desc: "a fitness app with no ad history. The crew plans its first tests from zero; the best one gets trials at $2.31 against a $4 target.", num: "115 model calls · $1.28" },
+  "northpaw": { name: "Northpaw Supply", desc: "a pet-supplies store already running ads. 18 daily checks, two weekly reviews, six new ads made and approved. Purchases cost $13.16 against a $16 goal. The recorded run made 204 model calls and cost $2.02." },
+  "beans-active": { name: "Beans' Active", desc: "a fitness app with no ad history. The crew plans its first tests from zero; the best one gets trials at $2.31 against a $4 target. The recorded run made 115 model calls and cost $1.28." },
 };
 
 const $ = (id) => document.getElementById(id);
@@ -438,7 +440,6 @@ function scenario(key, load) {
   $("d-url").textContent = s.name + " · Team Room · read-only replay";
   $("d-name").textContent = s.name;
   $("d-desc").textContent = s.desc;
-  $("d-num").textContent = s.num;
   $("d-open").href = "demo/" + key + "/";
   if (load) $("d-frame").src = "demo/" + key + "/";
 }
