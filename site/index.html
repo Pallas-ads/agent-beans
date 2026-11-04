@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pallas Growth Team</title>
+<title>Agent Beans</title>
 <meta name="description" content="An AI growth team for your Meta ads, built on Meta's Muse models. Six specialists check your ads every day and plan new ones every week. A seventh makes the changes, and only the ones you approve." />
-<link rel="icon" href="pallas-logo.png" />
+<link rel="icon" type="image/svg+xml" href="avatars/GL.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" />
@@ -203,7 +203,7 @@ button.btn { font-family: var(--ui); }
 <div class="s">
 <div class="wrap">
   <nav class="nav">
-    <a class="brand" href="./"><img src="pallas-logo.png" alt="" />Pallas Growth Team</a>
+    <a class="brand" href="./"><img src="avatars/GL.svg" alt="" />Agent Beans</a>
     <div class="links"><a href="#crew">The crew</a><a href="#demo">Live demo</a><a href="#meta">Built on Meta</a></div>
     <a class="btn sm bare" id="repo-link" style="visibility: hidden"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z" /></svg>GitHub</a>
   </nav>
@@ -303,16 +303,16 @@ button.btn { font-family: var(--ui); }
   <section class="sec" id="demo">
     <div class="sec-head">
       <h2 class="h2">Watch the crew run two real businesses.</h2>
-      <p class="sub">Recorded from live runs on Meta's models against sandbox accounts. It is the real app, read-only: click around.</p>
+      <p class="sub">Recorded from live runs on Meta's models against sandbox accounts. It is the real app, read-only: open the Team Room, the ads, what each role has learned, and every model call.</p>
     </div>
     <div class="stage">
       <div class="frame">
         <div class="frame-bar"><i></i><i></i><i></i><span class="frame-url" id="d-url"></span><a class="frame-open" id="d-open" href="demo/northpaw/" target="_blank" rel="noopener">Open in a new tab</a></div>
-        <iframe id="d-frame" src="demo/northpaw/" title="Read-only replay of the PGT app" loading="lazy"></iframe>
+        <iframe id="d-frame" src="demo/northpaw/" title="Read-only replay of the Agent Beans app" loading="lazy"></iframe>
       </div>
       <div class="marks" role="tablist" aria-label="Scenario">
         <div class="mk on" role="tab" tabindex="0" data-scen="northpaw" aria-selected="true">SMB</div>
-        <div class="mk" role="tab" tabindex="0" data-scen="pallas-fit" aria-selected="false">Indie developer</div>
+        <div class="mk" role="tab" tabindex="0" data-scen="beans-active" aria-selected="false">Indie developer</div>
       </div>
     </div>
     <div class="cap"><span><b id="d-name"></b>, <span id="d-desc"></span></span><span class="num" id="d-num"></span></div>
@@ -327,7 +327,7 @@ button.btn { font-family: var(--ui); }
       <div><dt>Muse Spark Open</dt><dd>Every daily role: Growth Lead, Analyst, Media Buyer, Producer and Reviewer. Open weights keep the daily checks under four cents a day.</dd></div>
       <div><dt>Muse Spark 1.3 with web search</dt><dd>The Strategist's market research. Every claim links to the page the search actually found.</dd></div>
       <div><dt>SAM 3.1 and Muse Image 1.0</dt><dd>Your product is cut from your own photo. Muse Image only paints the scene around it.</dd></div>
-      <div><dt>Ads MCP and Marketing API</dt><dd>Read your account, and write only what you approved. New ads always start paused.</dd></div>
+      <div><dt>Ads MCP, Marketing API and Facebook Login for Business</dt><dd>Connect your account with only the permissions you grant, read it through the Ads MCP, and write only what you approved. New ads always start paused.</dd></div>
     </dl>
   </section>
 
@@ -368,7 +368,7 @@ button.btn { font-family: var(--ui); }
   </div>
 
   <footer class="foot">
-    <div class="foot-l"><span class="brand"><img src="pallas-logo.png" alt="" />Pallas Growth Team</span><span>Built for the Meta Global AI Developer Hackathon. Demo data is synthetic.</span></div>
+    <div class="foot-l"><span class="brand"><img src="avatars/GL.svg" alt="" />Agent Beans</span><span>Built for the Meta Global AI Developer Hackathon. Demo data is synthetic.</span></div>
     <div class="foot-r">
       <span>Created by <b>Jieyi Deng</b></span>
       <a class="ico" href="https://github.com/Jieyi-Deng" aria-label="Jieyi Deng on GitHub"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z" /></svg></a>
@@ -379,7 +379,8 @@ button.btn { font-family: var(--ui); }
 </div>
 
 <script>
-// The project's GitHub repository. Empty for now, which hides the nav link.
+// The project's GitHub repository. Empty hides the nav link; set it to
+// https://github.com/Jieyi-Deng/agent-beans once that repository is public.
 const PROJECT_REPO = "";
 
 // Where demo requests go: the web app URL of the Google Apps Script in site/signup-sheet.gs,
@@ -396,16 +397,16 @@ if (PROJECT_REPO) {
 const CREW = {
   GL: { name: "Growth Lead", tag: "Plans the week", voice: "Two tests this week, not five. Here is why.", does: "Turns your goal and last week's results into a brief and a test plan, then hands out the work.", model: "Muse Spark Open" },
   AN: { name: "Analyst", tag: "Reads the numbers", voice: "I don't quote a number I can't cite.", does: "Reads the account every day and writes findings and test readouts, each number tied to evidence.", model: "Muse Spark Open" },
-  CS: { name: "Strategist", tag: "Researches the market", voice: "Every claim comes with the page I found it on.", does: "Searches the web for competitors and category trends, and turns them into angles worth testing.", model: "Muse Spark 1.3 with hosted web search" },
-  CP: { name: "Producer", tag: "Makes the ads", voice: "Your real product, cut from your own photo.", does: "Writes the copy and builds the image for each test, and asks the Analyst when it needs a number.", model: "Muse Spark Open, Muse Image 1.0 and SAM 3.1" },
+  CS: { name: "Creative Strategist", tag: "Researches the market", voice: "Every claim comes with the page I found it on.", does: "Searches the web for competitors and category trends, and turns them into angles worth testing.", model: "Muse Spark 1.3 with hosted web search" },
+  CP: { name: "Creative Producer", tag: "Makes the ads", voice: "Your real product, cut from your own photo.", does: "Writes the copy and builds the image for each test, and asks the Analyst when it needs a number.", model: "Muse Spark Open, Muse Image 1.0 and SAM 3.1" },
   MB: { name: "Media Buyer", tag: "Moves the budget", voice: "Not while it is still learning.", does: "Proposes budget changes and pauses from the daily numbers, within six house rules checked in code.", model: "Muse Spark Open" },
   RV: { name: "Reviewer", tag: "Checks the work", voice: "Checked in code first, then by eye.", does: "Sends back unsupported claims, wrong numbers and images that don't fit, with one line per fix.", model: "Code checks, then Muse Spark Open looking at the image" },
   OP: { name: "Operator", tag: "Acts on your yes", voice: "I run exactly what you approved, or nothing.", does: "The only crew member that writes to your ad account. New ads start paused.", model: "Plain code, no model" },
 };
 
 const SCENARIOS = {
-  "northpaw": { name: "Northpaw Supply", desc: "a pet-supplies store already running ads. 14 daily checks, one weekly review, three new ads made and approved.", num: "117 model calls · $1.14" },
-  "pallas-fit": { name: "Pallas Fit", desc: "a fitness app with no ad history. The crew plans its first tests from zero; the best one gets trials at $2.31 against a $4 target.", num: "113 model calls · $0.96" },
+  "northpaw": { name: "Northpaw Supply", desc: "a pet-supplies store already running ads. 18 daily checks, two weekly reviews, six new ads made and approved. Purchases cost $13.16 against a $16 goal.", num: "204 model calls · $2.02" },
+  "beans-active": { name: "Beans' Active", desc: "a fitness app with no ad history. The crew plans its first tests from zero; the best one gets trials at $2.31 against a $4 target.", num: "115 model calls · $1.28" },
 };
 
 const $ = (id) => document.getElementById(id);
